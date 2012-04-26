@@ -9,9 +9,7 @@ module Vatsim
         
     def self.download
 
-      if File.exists?(STATUS_FILE_PATH) and File.mtime(STATUS_FILE_PATH) > Time.now - 600
-        print "EXISTS, not downloading\n"
-      else
+      if !File.exists?(STATUS_FILE_PATH) or File.mtime(STATUS_FILE_PATH) < Time.now - 600
         File.new(STATUS_FILE_PATH)
         Net::HTTP.start("status.vatsim.net") { |http|
           resp = http.get("/status.txt")
