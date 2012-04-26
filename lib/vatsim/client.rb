@@ -15,6 +15,15 @@ module Vatsim
       return pilots
     end
     
+    def self.atc
+      clients = Vatsim::Data.parse_clients
+      atc = Array.new
+      clients.each { |client|
+        atc << client if client.clienttype.eql? "ATC"
+      }
+      return atc
+    end
+    
     private
     
     def initialize line
