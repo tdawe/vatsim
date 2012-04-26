@@ -2,6 +2,9 @@ module Vatsim
   class Data
     def self.parse_clients
 
+      Vatsim::Status.download
+      Vatsim::Status.parse
+            
       clients = Array.new
 
       parsing = false
