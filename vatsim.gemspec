@@ -1,6 +1,8 @@
+require './lib/vatsim/version.rb'
+
 Gem::Specification.new do |s|
   s.name        	= 'vatsim'
-  s.version     	= '0.0.1'
+  s.version     	= Vatsim::VERSION
   s.date        	= '2012-04-05'
   s.summary     	= "Vatsim"
   s.description 	= "Gem to retrieve Pilot/ATC online status"
