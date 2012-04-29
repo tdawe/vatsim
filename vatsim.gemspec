@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.description 	= "Gem to retrieve Pilot/ATC online status"
   s.authors     	= ["Trevor Dawe"]
   s.email       	= 'trevor.dawe@gmail.com'
-  s.files       	= ["cache/status.txt", "lib/vatsim.rb","lib/vatsim/status.rb","lib/vatsim/version.rb"]
+  s.files       	= `git ls-files`.split("\n")
   s.require_paths 	= ['lib','cache']
   s.homepage    	= 'https://github.com/tdawe/vatsim'
 end
