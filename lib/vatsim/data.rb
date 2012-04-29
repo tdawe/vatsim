@@ -6,8 +6,7 @@ module Vatsim
     def self.parse_clients
 
       if @@clients.length == 0
-        Vatsim::Status.download
-        Vatsim::Status.parse
+        Vatsim::Status.init
               
         parsing = false
   
