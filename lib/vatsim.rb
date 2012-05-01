@@ -1,6 +1,5 @@
-module Vatsim
-  require 'vatsim/status'
-  require 'vatsim/data'
-  require 'vatsim/client'
-  require 'vatsim/version'
-end
+require 'vatsim/status'
+require 'vatsim/data'
+require 'vatsim/client'
+require 'vatsim/prefile'
+require 'vatsim/version'
