@@ -1,25 +1,30 @@
 module Vatsim
+  # Stores parsed data from vatsim data format
   class Data
 
     @@clients = Array.new
     @@prefile = Array.new
     @@general = Hash.new
 
+    # Parse and return stored clients
     def self.clients
       self.parse
       return @@clients
     end
 
+    # Parse and return stored prefiled clients
     def self.prefile
       self.parse
       return @@prefile
     end
 
+    # Parse and return stored general properties
     def self.general
       self.parse
       return @@general
     end
 
+    # Parse the vatsim data file and store output as necessary
     def self.parse
 
       if @@clients.length == 0

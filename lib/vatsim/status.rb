@@ -2,15 +2,19 @@ require 'net/http'
 require 'uri'
 
 module Vatsim
+  # Downloads and save status and vatsim data files
   class Status
 
-    @@status_url = "http://status.vatsim.net/status.txt"
+    @@status_url = "http://status.vatsim.net/status.txt" # URL to retrieve vatsim status file
     @@status_download_interval = 60*60*6 # 6 hours
     @@vatsim_data_download_interval = 60*5 # 5 minutes
 
+    # Default status file path
     STATUS_FILE_PATH = File.expand_path("../../../cache", __FILE__) + "/status.txt"
+    # Default vatsim data file path
     VATSIMDATA_FILE_PATH = File.expand_path("../../../cache", __FILE__) + "/vatsim-data.txt"
 
+    # Initialize the system by downloading status and vatsim data files
     def self.init
 
       if !File.exists?(STATUS_FILE_PATH) or File.mtime(STATUS_FILE_PATH) < Time.now - @@status_download_interval
@@ -25,6 +29,7 @@ module Vatsim
 
     private
 
+    # Download a url to a file path
     def self.download_to_file url, file
 
       url = URI.parse(URI.encode(url.strip))
@@ -40,6 +45,7 @@ module Vatsim
 
     end
 
+    # Return random vatsim data url from status file
     def self.random_data_url
 
       url0s = Array.new
