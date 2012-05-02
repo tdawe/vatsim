@@ -10,9 +10,9 @@ module Vatsim
     @@vatsim_data_download_interval = 60*5 # 5 minutes
 
     # Default status file path
-    STATUS_FILE_PATH = File.expand_path("../../../cache", __FILE__) + "/status.txt"
+    STATUS_FILE_PATH = Dir::tmpdir + "/vatsim-status.txt"
     # Default vatsim data file path
-    VATSIMDATA_FILE_PATH = File.expand_path("../../../cache", __FILE__) + "/vatsim-data.txt"
+    VATSIMDATA_FILE_PATH = Dir::tmpdir + "/vatsim-data.txt"
 
     # Initialize the system by downloading status and vatsim data files
     def self.init
