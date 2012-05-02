@@ -1,5 +1,6 @@
 require 'net/http'
 require 'uri'
+require 'tmpdir'
 
 module Vatsim
   # Downloads and save status and vatsim data files
