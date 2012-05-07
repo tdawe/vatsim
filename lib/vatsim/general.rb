@@ -3,8 +3,9 @@ module Vatsim
   class General
 
     # Returns all general properties
-    def self.all
-      Vatsim::Data.general
+    def self.all data = nil
+      data = Vatsim::Data.new if data.nil?
+      data.general
     end
 
   end
