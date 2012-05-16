@@ -6,31 +6,27 @@ describe Vatsim::VERSION do
  	end
 end
 
-describe Vatsim::Client do
+describe Vatsim::Data do
 	it "should return correct number of clients, pilots, and atc" do
 		data = Vatsim::Data.new("download_files" => false, "data_file_path" => File.dirname(__FILE__) + "/vatsim-data.txt")
-    Vatsim::Client.all(data).length.should equal(502)
-		Vatsim::Client.pilots(data).length.should equal(379)
-		Vatsim::Client.atc(data).length.should equal(122)
+    data.clients.length.should equal(502)
+		data.pilots.length.should equal(379)
+		data.atc.length.should equal(122)
 	end
-end
 
-describe Vatsim::Prefile do
   it "should return correct number of prefiled" do
 		data = Vatsim::Data.new("download_files" => false, "data_file_path" => File.dirname(__FILE__) + "/vatsim-data.txt")
-    Vatsim::Prefile.all(data).length.should equal(6)
+    data.prefiles.length.should equal(6)
 	end
-end
 
-describe Vatsim::General do
   it "should return correct values for general properties" do
 		data = Vatsim::Data.new("download_files" => false, "data_file_path" => File.dirname(__FILE__) + "/vatsim-data.txt")
-    Vatsim::General.all(data).length.should equal(5)
-    Vatsim::General.all(data)["version"].should == "8"
-    Vatsim::General.all(data)["reload"].should == "2"
-    Vatsim::General.all(data)["update"].should == "20120504011745"
-    Vatsim::General.all(data)["atis_allow_min"].should == "5"
-    Vatsim::General.all(data)["connected_clients"].should == "502"
+    data.general.length.should equal(5)
+    data.general["version"].should == "8"
+    data.general["reload"].should == "2"
+    data.general["update"].should == "20120504011745"
+    data.general["atis_allow_min"].should == "5"
+    data.general["connected_clients"].should == "502"
 	end
 end
 

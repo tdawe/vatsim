@@ -1,14 +1,13 @@
 require './lib/vatsim.rb'
 
-data = nil
-#data = Vatsim::Data.new("download_files" => false, "data_file_path" => File.dirname(__FILE__) + "/spec/vatsim-data.txt")
+data = Vatsim::Data.new
 
-puts "There are #{Vatsim::Client.all(data).length} connected clients"
-puts "There are #{Vatsim::Client.pilots(data).length} connected pilots"
-puts "There are #{Vatsim::Client.atc(data).length} connected air traffic controllers"
-puts "There are #{Vatsim::Prefile.all(data).length} prefiled pilots"
+puts "There are #{data.clients.length} connected clients"
+puts "There are #{data.pilots.length} connected pilots"
+puts "There are #{data.atc.length} connected air traffic controllers"
+puts "There are #{data.prefiles.length} prefiled pilots"
 
-Vatsim::General.all(data).each { |p,a|
+data.general.each { |p,a|
   puts "#{p} = #{a}"
 }
 

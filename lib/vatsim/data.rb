@@ -6,15 +6,17 @@ module Vatsim
   # Stores parsed data from vatsim data format
   class Data
 
+    attr_reader :clients, :prefiles, :general
+
     STATUS_URL = "http://status.vatsim.net/status.txt"
     STATUS_DOWNLOAD_INTERVAL = 60*60*6 # 6 hours
     DATA_DOWNLOAD_INTERVAL = 60*2 # 2 minutes
 
     def initialize properties = nil
       @clients = Array.new
-      @prefile = Array.new
+      @prefiles = Array.new
       @general = Hash.new
-      
+
       @status_file_path = Dir::tmpdir + "/vatsim-status.txt"
       @data_file_path = Dir::tmpdir + "/vatsim-data.txt"
       @refresh_files = true
@@ -25,38 +27,42 @@ module Vatsim
         @refresh_files = properties["download_files"] if properties.has_key?("download_files")
       end
 
+      parse
+
     end
 
-    # Parse and return stored clients
-    def clients
-      parse
-      return @clients
+    # Returns all connected Pilots
+    def pilots
+      pilots = Array.new
+      @clients.each { |client|
+        pilots << client if client.clienttype.eql? "PILOT"
+      }
+      return pilots
     end
 
-    # Parse and return stored prefiled clients
-    def prefile
-      parse
-      return @prefile
+    # Returns all connected ATC
+    def atc
+      atc = Array.new
+      @clients.each { |client|
+        atc << client if client.clienttype.eql? "ATC"
+      }
+      return atc
     end
 
-    # Parse and return stored general properties
-    def general
-      parse
-      return @general
-    end
+    private
 
     # Parse the vatsim data file and store output as necessary
     def parse
 
       if @clients.length == 0
-        
-	download_files if @refresh_files
+
+	      download_files if @refresh_files
 
         parsing_clients = false
         parsing_prefile = false
         parsing_general = false
-        
-	File.open(@data_file_path, 'r:ascii-8bit').each { |line|
+
+	      File.open(@data_file_path, 'r:ascii-8bit').each { |line|
 
           parsing_clients = false if line.start_with? ";"
           parsing_prefile = false if line.start_with? ";"
@@ -65,7 +71,7 @@ module Vatsim
           if parsing_clients
             @clients << Client.new(line)
           elsif parsing_prefile
-            @prefile << Prefile.new(line)
+            @prefiles << Prefile.new(line)
           elsif parsing_general
             line_split = line.split("=")
             @general[line_split[0].strip.downcase.gsub(" ", "_")] = line_split[1].strip
@@ -90,8 +96,6 @@ module Vatsim
       end
 
     end
-
-    protected
 
     # Download a url to a file path
     def download_to_file url, file
