@@ -53,9 +53,6 @@ module Vatsim
 
     # Parse the vatsim data file and store output as necessary
     def parse
-
-      if @clients.length == 0
-
 	      download_files if @refresh_files
 
         parsing_clients = false
@@ -81,7 +78,6 @@ module Vatsim
           parsing_prefile = true if line.start_with? "!PREFILE:"
           parsing_general = true if line.start_with? "!GENERAL:"
         }
-      end
     end
 
     # Initialize the system by downloading status and vatsim data files
