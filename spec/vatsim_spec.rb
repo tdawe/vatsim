@@ -9,7 +9,7 @@ end
 describe Vatsim::Data do
 	it "should return correct number of clients, pilots, and atc" do
 		data = Vatsim::Data.new("download_files" => false, "data_file_path" => File.dirname(__FILE__) + "/vatsim-data.txt")
-    data.clients.length.should equal(502)
+    data.clients.length.should equal(501)
 		data.pilots.length.should equal(379)
 		data.atc.length.should equal(122)
 	end

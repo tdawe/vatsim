@@ -6,7 +6,7 @@ module Vatsim
   # Stores parsed data from vatsim data format
   class Data
 
-    attr_reader :clients, :prefiles, :general
+    attr_reader :clients, :pilots, :atc, :prefiles, :general
 
     STATUS_URL = "http://status.vatsim.net/status.txt"
     STATUS_DOWNLOAD_INTERVAL = 60*60*6 # 6 hours
@@ -14,6 +14,8 @@ module Vatsim
 
     def initialize properties = nil
       @clients = Array.new
+      @pilots = Array.new
+      @atc = Array.new
       @prefiles = Array.new
       @general = Hash.new
 
@@ -28,24 +30,6 @@ module Vatsim
       end
 
       parse
-    end
-
-    # Returns all connected Pilots
-    def pilots
-      pilots = Array.new
-      @clients.each { |client|
-        pilots << client if client.clienttype.eql? "PILOT"
-      }
-      return pilots
-    end
-
-    # Returns all connected ATC
-    def atc
-      atc = Array.new
-      @clients.each { |client|
-        atc << client if client.clienttype.eql? "ATC"
-      }
-      return atc
     end
 
     private
@@ -65,7 +49,16 @@ module Vatsim
         parsing_general = false if line.start_with? ";"
 
         if parsing_clients
-          @clients << Client.new(line)
+          clienttype = line.split(":")[3]
+          if clienttype.eql? "PILOT"
+            pilot = Pilot.new(line)
+            @clients << pilot
+            @pilots << pilot
+          elsif clienttype.eql? "ATC"
+            controller = ATC.new(line)
+            @clients << controller
+            @atc << controller
+          end
         elsif parsing_prefile
           @prefiles << Prefile.new(line)
         elsif parsing_general
