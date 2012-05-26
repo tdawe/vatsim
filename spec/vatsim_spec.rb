@@ -7,9 +7,8 @@ describe Vatsim::VERSION do
 end
 
 describe Vatsim::Data do
-	it "should return correct number of clients, pilots, and atc" do
+	it "should return correct number of pilots, and atc" do
 		data = Vatsim::Data.new("download_files" => false, "data_file_path" => File.dirname(__FILE__) + "/vatsim-data.txt")
-    data.clients.length.should equal(501)
 		data.pilots.length.should equal(379)
 		data.atc.length.should equal(122)
 	end
@@ -31,7 +30,7 @@ describe Vatsim::Data do
 
   it "should return correct values for a specific pilot" do
     data = Vatsim::Data.new("download_files" => false, "data_file_path" => File.dirname(__FILE__) + "/vatsim-data.txt")
-    pilot = data.clients[20]
+    pilot = data.pilots[19]
     pilot.callsign.should == "ACA021"
     pilot.cid.should == "1216364"
     pilot.realname.should == "Sam Bouz CYUL"
@@ -72,7 +71,7 @@ describe Vatsim::Data do
 
   it "should return correct values for a specific ATC" do
     data = Vatsim::Data.new("download_files" => false, "data_file_path" => File.dirname(__FILE__) + "/vatsim-data.txt")
-    atc = data.clients[113]
+    atc = data.atc[20]
     atc.callsign.should == "CZEG_CTR"
     atc.cid.should == "1096034"
     atc.realname.should == "Brett Zubot"
