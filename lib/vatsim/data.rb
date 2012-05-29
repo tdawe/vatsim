@@ -11,15 +11,14 @@ module Vatsim
     STATUS_URL = "http://status.vatsim.net/status.txt"
     STATUS_DOWNLOAD_INTERVAL = 60*60*6 # 6 hours
     DATA_DOWNLOAD_INTERVAL = 60*2 # 2 minutes
+    STATUS_FILE_PATH = Dir::tmpdir + "/vatsim-status.txt"
+    DATA_FILE_PATH = Dir::tmpdir + "/vatsim-data.txt"
 
-    def initialize properties = nil
+    def initialize
       @pilots = Array.new
       @atc = Array.new
       @prefiles = Array.new
       @general = Hash.new
-
-      @status_file_path = Dir::tmpdir + "/vatsim-status.txt"
-      @data_file_path = Dir::tmpdir + "/vatsim-data.txt"
 
       parse
     end
@@ -34,7 +33,7 @@ module Vatsim
       parsing_prefile = false
       parsing_general = false
 
-      File.open(@data_file_path, 'r:ascii-8bit').each { |line|
+      File.open(DATA_FILE_PATH, 'r:ascii-8bit').each { |line|
 
         parsing_clients = false if line.start_with? ";"
         parsing_prefile = false if line.start_with? ";"
@@ -64,12 +63,12 @@ module Vatsim
 
     # Initialize the system by downloading status and vatsim data files
     def download_files
-      if !File.exists?(@status_file_path) or File.mtime(@status_file_path) < Time.now - STATUS_DOWNLOAD_INTERVAL
-       download_to_file STATUS_URL, @status_file_path
+      if !File.exists?(STATUS_FILE_PATH) or File.mtime(STATUS_FILE_PATH) < Time.now - STATUS_DOWNLOAD_INTERVAL
+       download_to_file STATUS_URL, STATUS_FILE_PATH 
       end
 
-      if !File.exists?(@data_file_path ) or File.mtime(@data_file_path ) < Time.now - DATA_DOWNLOAD_INTERVAL
-        download_to_file random_data_url, @data_file_path
+      if !File.exists?(DATA_FILE_PATH) or File.mtime(DATA_FILE_PATH) < Time.now - DATA_DOWNLOAD_INTERVAL
+        download_to_file random_data_url, DATA_FILE_PATH 
       end
     end
 
@@ -90,7 +89,7 @@ module Vatsim
     # Return random vatsim data url from status file
     def random_data_url
       url0s = Array.new
-      file = File.open(@status_file_path)
+      file = File.open(STATUS_FILE_PATH)
       file.each {|line|
         if line.start_with? "url0"
           url0s << line.split("=").last
