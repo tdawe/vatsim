@@ -1,35 +1,48 @@
 require 'spec_helper'
 
+def stub_requests
+  stub_request(:get, "http://status.vatsim.net/status.txt").to_return(:body => File.new(File.dirname(__FILE__) + "/vatsim-status.txt"))
+  stub_request(:get, "http://www.net-flyer.net/DataFeed/vatsim-data.txt").to_return(:body => File.new(File.dirname(__FILE__) + "/vatsim-data.txt"))
+  stub_request(:get, "http://www.klain.net/sidata/vatsim-data.txt").to_return(:body => File.new(File.dirname(__FILE__) + "/vatsim-data.txt"))
+  stub_request(:get, "http://fsproshop.com/servinfo/vatsim-data.txt").to_return(:body => File.new(File.dirname(__FILE__) + "/vatsim-data.txt"))
+  stub_request(:get, "http://info.vroute.net/vatsim-data.txt").to_return(:body => File.new(File.dirname(__FILE__) + "/vatsim-data.txt"))
+  stub_request(:get, "http://data.vattastic.com/vatsim-data.txt").to_return(:body => File.new(File.dirname(__FILE__) + "/vatsim-data.txt"))
+end
+
 describe Vatsim::VERSION do
-	it "should return a non nil version" do
-		Vatsim::VERSION.should_not == nil
- 	end
+  it "should return a non nil version" do
+    Vatsim::VERSION.should_not == nil
+ end
 end
 
 describe Vatsim::Data do
-	it "should return correct number of pilots, and atc" do
-		data = Vatsim::Data.new("download_files" => false, "data_file_path" => File.dirname(__FILE__) + "/vatsim-data.txt")
-		data.pilots.length.should equal(379)
-		data.atc.length.should equal(122)
-	end
+  it "should return correct number of pilots, and atc" do
+    stub_requests
+    data = Vatsim::Data.new
+    data.pilots.length.should equal(379)
+    data.atc.length.should equal(122)
+  end
 
   it "should return correct number of prefiled" do
-		data = Vatsim::Data.new("download_files" => false, "data_file_path" => File.dirname(__FILE__) + "/vatsim-data.txt")
+    stub_requests	
+    data = Vatsim::Data.new
     data.prefiles.length.should equal(6)
-	end
+  end
 
   it "should return correct values for general properties" do
-		data = Vatsim::Data.new("download_files" => false, "data_file_path" => File.dirname(__FILE__) + "/vatsim-data.txt")
+    stub_requests
+    data = Vatsim::Data.new
     data.general.length.should equal(5)
     data.general["version"].should == "8"
     data.general["reload"].should == "2"
     data.general["update"].should == "20120504011745"
     data.general["atis_allow_min"].should == "5"
     data.general["connected_clients"].should == "502"
-	end
+  end
 
   it "should return correct values for a specific pilot" do
-    data = Vatsim::Data.new("download_files" => false, "data_file_path" => File.dirname(__FILE__) + "/vatsim-data.txt")
+    stub_requests
+    data = Vatsim::Data.new
     pilot = data.pilots[19]
     pilot.callsign.should == "ACA021"
     pilot.cid.should == "1216364"
@@ -70,7 +83,8 @@ describe Vatsim::Data do
   end
 
   it "should return correct values for a specific ATC" do
-    data = Vatsim::Data.new("download_files" => false, "data_file_path" => File.dirname(__FILE__) + "/vatsim-data.txt")
+    stub_requests 
+    data = Vatsim::Data.new
     atc = data.atc[20]
     atc.callsign.should == "CZEG_CTR"
     atc.cid.should == "1096034"

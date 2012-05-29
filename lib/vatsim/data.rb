@@ -20,13 +20,6 @@ module Vatsim
 
       @status_file_path = Dir::tmpdir + "/vatsim-status.txt"
       @data_file_path = Dir::tmpdir + "/vatsim-data.txt"
-      @refresh_files = true
-
-      if !properties.nil?
-        @status_file_path = properties["status_file_path"] if properties.has_key?("status_file_path")
-        @data_file_path = properties["data_file_path"] if properties.has_key?("data_file_path")
-        @refresh_files = properties["download_files"] if properties.has_key?("download_files")
-      end
 
       parse
     end
@@ -35,7 +28,7 @@ module Vatsim
 
     # Parse the vatsim data file and store output as necessary
     def parse
-      download_files if @refresh_files
+      download_files
 
       parsing_clients = false
       parsing_prefile = false
