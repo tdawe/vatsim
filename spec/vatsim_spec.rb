@@ -25,6 +25,7 @@ describe Vatsim::Data do
     data.pilots.length.should equal(379)
     data.atc.length.should equal(122)
     data.servers.length.should equal(8)
+    data.voice_servers.length.should equal(11)
     data.prefiles.length.should equal(6)
   end
 
@@ -134,5 +135,16 @@ describe Vatsim::Data do
     server.name.should == "USA North"
     server.clients_connection_allowed.should == "1"
   end
+
+  it "should return correct values for a specific voice server" do
+    data = Vatsim::Data.new
+    voice_server = data.voice_servers[4]
+    voice_server.hostname_or_IP.should == "voice.zhuartcc.net"
+    voice_server.location.should == "Sponsored by Houston ARTCC"
+    voice_server.name.should == "ZHU-ARTCC"
+    voice_server.clients_connection_allowed.should == "1"
+    voice_server.type_of_voice_server.should == "R"
+  end
+
 end
 
