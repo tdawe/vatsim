@@ -35,18 +35,16 @@ module Vatsim
 
       File.open(DATA_FILE_PATH, 'r:ascii-8bit').each { |line|
 
-        parsing_clients = false if line.start_with? ";"
-        parsing_prefile = false if line.start_with? ";"
-        parsing_general = false if line.start_with? ";"
-
-        if parsing_clients
+        if line.start_with? ";"
+          parsing_clients = false
+          parsing_prefile = false
+          parsing_general = false
+        elsif parsing_clients
           clienttype = line.split(":")[3]
           if clienttype.eql? "PILOT"
-            pilot = Pilot.new(line)
-            @pilots << pilot
+            @pilots << Pilot.new(line)
           elsif clienttype.eql? "ATC"
-            controller = ATC.new(line)
-            @atc << controller
+            @atc << ATC.new(line)
           end
         elsif parsing_prefile
           @prefiles << Prefile.new(line)
