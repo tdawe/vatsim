@@ -13,8 +13,8 @@ describe Vatsim::Data do
 
   before do
     WebMock.disable_net_connect!
-    File.delete(Vatsim::Data::STATUS_FILE_PATH)
-    File.delete(Vatsim::Data::DATA_FILE_PATH)
+    File.delete(Vatsim::Data::STATUS_FILE_PATH) if File.exists?(Vatsim::Data::STATUS_FILE_PATH)
+    File.delete(Vatsim::Data::DATA_FILE_PATH) if File.exists?(Vatsim::Data::DATA_FILE_PATH)
     stub_request(:get, "http://status.vatsim.net/status.txt").to_return(:body => File.new(File.dirname(__FILE__) + "/vatsim-status.txt"))
     stub_request(:get, "http://www.net-flyer.net/DataFeed/vatsim-data.txt").to_return(:body => File.new(File.dirname(__FILE__) + "/vatsim-data.txt"))
     stub_request(:get, "http://www.klain.net/sidata/vatsim-data.txt").to_return(:body => File.new(File.dirname(__FILE__) + "/vatsim-data.txt"))
