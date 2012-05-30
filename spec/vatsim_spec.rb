@@ -20,15 +20,11 @@ describe Vatsim::Data do
     stub_request(:get, "http://data.vattastic.com/vatsim-data.txt").to_return(:body => File.new(File.dirname(__FILE__) + "/vatsim-data.txt"))
   end
 
-  it "should return correct number of pilots, servers, and atc" do
+  it "should return correct number of pilots, prefiles, servers, and atc" do
     data = Vatsim::Data.new
     data.pilots.length.should equal(379)
     data.atc.length.should equal(122)
     data.servers.length.should equal(8)
-  end
-
-  it "should return correct number of prefiled" do
-    data = Vatsim::Data.new
     data.prefiles.length.should equal(6)
   end
 
@@ -81,6 +77,34 @@ describe Vatsim::Data do
     pilot.heading.should == "169"
     pilot.QNH_iHg.should == "29.7"
     pilot.QNH_Mb.should == "1005"
+  end
+
+  it "should return correct values for a specific prefile" do
+    data = Vatsim::Data.new
+    prefile = data.prefiles[1]
+    prefile.callsign.should == "DAV10674"
+    prefile.cid.should == "1207105"
+    prefile.realname.should == "Randy Harrill KCMO"
+    prefile.planned_aircraft.should == "T/MD90/W"
+    prefile.planned_tascruise.should == "360"
+    prefile.planned_depairport.should == "KATL"
+    prefile.planned_altitude.should == "F290"
+    prefile.planned_destairport.should == "KMIA"
+    prefile.planned_revision.should == "0"
+    prefile.planned_flighttype.should == "I"
+    prefile.planned_deptime.should == "45"
+    prefile.planned_actdeptime.should == "45"
+    prefile.planned_hrsenroute.should == "1"
+    prefile.planned_minenroute.should == "50"
+    prefile.planned_hrsfuel.should == "2"
+    prefile.planned_minfuel.should == "50"
+    prefile.planned_altairport.should == "KPBI"
+    prefile.planned_remarks.should == "+VFPS+/V/ "
+    prefile.planned_route.should == "THRSR6 LUCKK SZW SSCOT1"
+    prefile.planned_depairport_lat.should == "0"
+    prefile.planned_depairport_lon.should == "0"
+    prefile.planned_destairport_lat.should == "0"
+    prefile.planned_destairport_lon.should == "0"
   end
 
   it "should return correct values for a specific ATC" do
