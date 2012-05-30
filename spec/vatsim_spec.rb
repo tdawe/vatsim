@@ -20,10 +20,11 @@ describe Vatsim::Data do
     stub_request(:get, "http://data.vattastic.com/vatsim-data.txt").to_return(:body => File.new(File.dirname(__FILE__) + "/vatsim-data.txt"))
   end
 
-  it "should return correct number of pilots, and atc" do
+  it "should return correct number of pilots, servers, and atc" do
     data = Vatsim::Data.new
     data.pilots.length.should equal(379)
     data.atc.length.should equal(122)
+    data.servers.length.should equal(8)
   end
 
   it "should return correct number of prefiled" do
@@ -98,6 +99,16 @@ describe Vatsim::Data do
     atc.facilitytype.should == "6"
     atc.visualrange.should == "600"
     atc.time_logon.should == "20120504004825"
+  end
+
+  it "should return correct values for a specific server" do
+    data = Vatsim::Data.new
+    server = data.servers[6]
+    server.ident.should == "USA-N"
+    server.hostname_or_IP.should == "204.244.237.21"
+    server.location.should == "Vancouver, CANADA"
+    server.name.should == "USA North"
+    server.clients_connection_allowed.should == "1"
   end
 end
 
