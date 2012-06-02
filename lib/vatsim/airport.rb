@@ -30,15 +30,13 @@ module Vatsim
 
       return @@airport_cache[icao] if(@@airport_cache.has_key?(icao))
 
-      file = File.open(File.dirname(__FILE__) + "/airports.gz")
       line_number = 0
       start_line_number = @@line_numbers[icao[0]]
       start_line_number = 0 if start_line_number.nil?
 
-      Zlib::GzipReader.new(file).each_line { |line|
-
+      Zlib::GzipReader.open(File.dirname(__FILE__) + "/airports.gz").each_line { |line|
         if(line_number >= start_line_number)
-          if line.start_with?("#{icao}:") #values[0].eql?(icao)
+          if line.start_with?("#{icao}:")
             values = line.split(":")
             airport = Airport.new(line)
             @@airport_cache.store(icao, airport) if !@@airport_cache.has_key?(icao)
