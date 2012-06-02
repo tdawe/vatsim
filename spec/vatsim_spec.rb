@@ -6,6 +6,20 @@ describe Vatsim::VERSION do
  end
 end
 
+describe Vatsim::Airport do
+  it "should return correct Airport" do
+    airport = Vatsim::Airport.get("CYYC")
+    airport.should_not == nil
+    airport.icao.should == "CYYC"
+    airport.latitude.should == "51.113899230957"
+    airport.longitude.should == "-114.019996643066"
+  end
+
+  it "should return nil Airport" do
+    Vatsim::Airport.get("NONE").should == nil
+  end
+
+end
 describe Vatsim::Data do
 
   before do
@@ -70,10 +84,10 @@ describe Vatsim::Data do
     pilot.planned_altairport.should == "LTBA"
     pilot.planned_remarks.should == " /T/"
     pilot.planned_route.should == "KS LUKOS 6E8 LO 6E18 DK CRDR6 FV R11 TS R808 UUOO R368 KUBOK UA279 GR UP29 SUMOL UW100 INB UM853 BUK UW71 ILHAN"
-    pilot.planned_depairport_lat.should == "0"
-    pilot.planned_depairport_lon.should == "0"
-    pilot.planned_destairport_lat.should == "0"
-    pilot.planned_destairport_lon.should == "0"
+    pilot.planned_depairport_lat.should == "55.972599029541"
+    pilot.planned_depairport_lon.should == "37.4146003723145"
+    pilot.planned_destairport_lat.should == "40.1281013489"
+    pilot.planned_destairport_lon.should == "32.995098114"
     pilot.time_logon.should == "20120503235431"
     pilot.heading.should == "169"
     pilot.QNH_iHg.should == "29.7"
