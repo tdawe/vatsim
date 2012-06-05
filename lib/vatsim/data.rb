@@ -8,11 +8,11 @@ module Vatsim
 
     attr_reader :pilots, :atc, :prefiles, :general, :servers, :voice_servers
 
-    STATUS_URL = "http://status.vatsim.net/status.txt"
-    STATUS_DOWNLOAD_INTERVAL = 60*60*6 # 6 hours
-    DATA_DOWNLOAD_INTERVAL = 60*2 # 2 minutes
-    STATUS_FILE_PATH = Dir::tmpdir + "/vatsim-status.txt"
-    DATA_FILE_PATH = Dir::tmpdir + "/vatsim-data.txt"
+    STATUS_URL = "http://status.vatsim.net/status.txt" # URL for downloading the Vatsim status file
+    STATUS_DOWNLOAD_INTERVAL = 60*60*6 # Download status file maximum of once every 6 hours
+    DATA_DOWNLOAD_INTERVAL = 60*2 # Download data file maximum of once every 2 minutes
+    STATUS_FILE_PATH = Dir::tmpdir + "/vatsim-status.txt" # Temporary location to store the Vatsim status file 
+    DATA_FILE_PATH = Dir::tmpdir + "/vatsim-data.txt" # Temporary location to store the Vatsim data file
 
     def initialize
       @pilots = Array.new
