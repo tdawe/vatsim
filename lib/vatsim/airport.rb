@@ -33,7 +33,7 @@ module Vatsim
     def self.airport_cache
       if @@airport_cache.nil?
         @@airport_cache ||= Hash.new
-        Zlib::GzipReader.open(File.dirname(__FILE__) + "/airports.gz").each_line { |line|
+        Zlib::GzipReader.open(File.dirname(__FILE__) + "/airports.gz").read.split("\n").each { |line|
           airport = Airport.new(line)
           @@airport_cache.store(airport.icao, airport)
         }
